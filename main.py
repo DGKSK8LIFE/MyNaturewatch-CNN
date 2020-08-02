@@ -9,41 +9,50 @@ from matplotlib import pyplot
 from matplotlib.image import imread
 import tensorflow as tf
 import os
-import pandas as pd
 import numpy as np
 
 base = '/home/jose/Programming/aiml/Data/naturewatch'
+# Directory of all the pictures with an animal 
 critter = base + '/critter/'
+# Directory of all the pictures without an animal
 no_critter = base + '/no_critter/'
 
 def load_data():
 	data = []
 	labels = []
 	for raw in os.listdir(critter):
-		image = imread(critter + raw)
+		# The array of values
+		image = np.array(imread(critter + raw))
 		data.append(image)
+		# 1 for yes critter
 		labels.append(1)
+		# image.shape = (1088, 1920, 3)
 
 	for raw in os.listdir(no_critter):
 		# load image pixels
-		image = imread(no_critter + raw)
+		image = np.array(imread(no_critter + raw))
 		data.append(image)
+		# 0 for no critter 
 		labels.append(0)
-	#data = np.asarray(data)
-	#labels = np.asarray(labels)
+		# image.shape = (1088, 1920, 3)
+	data = np.array(data)
+	labels = np.array(labels)
 	return data, labels
 
 data, labels = load_data()
 
-#assert data.shape[0] == labels.shape[0]
+# (2308,)
+print(data.shape) 
+print(labels.shape)
 
 X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=101)
 
-X_train = np.asarray(X_train).astype(np.float32)
-X_test = np.asarray(X_test).astype(np.float32)
-y_train = np.asarray(y_train).astype(np.float32)
-y_test = np.asarray(y_test).astype(np.float32)
+print(X_train.shape) # (1846,)
+print(X_test.shape)
+print(y_train.shape) # (462,)
+print(y_test.shape)
 
+# Plot 9 images
 for i, image in enumerate(X_train[:9]):
 	# define subplot
 	pyplot.subplot(330 + 1 + i)
@@ -86,18 +95,9 @@ opt = RMSprop(lr=0.0001, decay=1e-6)
 model.compile(loss='categorical_crossentropy',
 				optimizer=opt,
 				metrics=['accuracy'])
-'''
-for i in [X_train, X_test, y_train, y_test]:
-	print(i.shape)
-	print(i.shape[0])
-	print(type(i))
-	print()
-'''
 
-model.fit(X_train, y_train)
+model.fit(X_train, y_train) # Causes error
 
-'''
 pred = model.predict(X_test)
 
 print('Test accuracy', accuracy_score(y_test, pred)*100)
-'''
