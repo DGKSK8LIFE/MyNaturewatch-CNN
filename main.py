@@ -1,10 +1,14 @@
-import tensorflow as tf 
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Conv2D
+from tensorflow.keras.layers import Activation, MaxPooling2D, Dropout, Flatten, Reshape
+from sklearn.model_selection import train_test_split
+
 from matplotlib import pyplot
 from matplotlib.image import imread
 import os
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
+
 
 
 base = '/home/jose/Programming/aiml/Data/naturewatch'
@@ -46,3 +50,7 @@ for i, image in enumerate(X_train[:9]):
 	print('image', image.shape, 'label', y_train[i])
 # show the figure
 pyplot.show()
+
+model = Sequential()
+# Reshape image to a much smaller size
+model.add(Reshape(544, 960, 3))
