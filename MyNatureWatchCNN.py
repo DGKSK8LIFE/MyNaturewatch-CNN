@@ -107,8 +107,6 @@ pred = model.predict(X_test).round()
 
 print('Test accuracy', accuracy_score(y_test, pred)*100)
 
-print(pred)
-
 def plot_one_image(idx):
 	print('label: %s' % ('yes animal' if np.all(y_test[idx] == np.array([0,1])) else 'no animal'))
 	print('guessed: %s' % ('yes animal' if np.all(pred[idx] == np.array([0,1])) else 'no animal'))
