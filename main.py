@@ -4,12 +4,14 @@ from tensorflow.keras.layers import Activation, MaxPooling2D, Dropout, Flatten, 
 from tensorflow.keras.optimizers import RMSprop
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+from sklearn.neural_network import MLPClassifier
 
 from matplotlib import pyplot
 from matplotlib.image import imread
 import tensorflow as tf
 import os
 import numpy as np
+import cv2
 
 base = '/home/jose/Programming/aiml/Data/naturewatch'
 # Directory of all the pictures with an animal 
@@ -22,18 +24,20 @@ def load_data():
 	labels = []
 	for raw in os.listdir(critter):
 		# The array of values
-		image = np.array(imread(critter + raw))
-		data.append(image)
+		image = cv2.resize(imread(critter + raw), (120, 68))
+		print(image.shape)
+		data.append(np.array(image))
 		# 1 for yes critter
-		labels.append(1)
+		labels.append(np.array([0, 1]))
 		# image.shape = (1088, 1920, 3)
 
 	for raw in os.listdir(no_critter):
 		# load image pixels
-		image = np.array(imread(no_critter + raw))
-		data.append(image)
+		image = cv2.resize(imread(no_critter + raw), (120, 68))
+		print(image.shape)
+		data.append(np.array(image))
 		# 0 for no critter 
-		labels.append(0)
+		labels.append(np.array([1, 0]))
 		# image.shape = (1088, 1920, 3)
 	data = np.array(data)
 	labels = np.array(labels)
@@ -60,15 +64,16 @@ for i, image in enumerate(X_train[:9]):
 	print('image', image.shape, 'label', y_train[i])
 # show the figure
 pyplot.show()
+ 
 
 dropout = 0.2
 model = Sequential()
 # Reshape image to a much smaller size
-model.add(Reshape((272, 480, 3)))
 
-model.add(Conv2D(32, (3, 3), padding='same'))
+model.add(Conv2D(32, (3, 3), padding='same', input_shape=(68, 120, 3)))
 model.add(Activation('relu'))
 
+'''
 model.add(Conv2D(32, (3, 3)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
@@ -80,9 +85,9 @@ model.add(Conv2D(64, (3, 3)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(dropout))
-
+'''
 model.add(Flatten())
-model.add(Dense(512))
+model.add(Dense(32))
 model.add(Activation('relu'))
 model.add(Dropout(dropout))
 model.add(Dense(2))
@@ -96,7 +101,8 @@ model.compile(loss='categorical_crossentropy',
 				optimizer=opt,
 				metrics=['accuracy'])
 
-model.fit(X_train, y_train) # Causes error
+
+model.fit(X_train, y_train, batch_size=3, epochs=50) # Causes error
 
 pred = model.predict(X_test)
 
