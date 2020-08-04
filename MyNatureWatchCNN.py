@@ -1,23 +1,35 @@
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Conv2D
-from tensorflow.keras.layers import Activation, MaxPooling2D, Dropout, Flatten, Reshape
+from tensorflow.keras.layers import Activation, MaxPooling2D, Dropout, Flatten
 from tensorflow.keras.optimizers import RMSprop
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
 
-from matplotlib import pyplot
+from matplotlib import pyplot as plt
 from matplotlib.image import imread
-import tensorflow as tf
+import seaborn as sns
 import os
 import numpy as np
 import cv2
+import pandas as pd
 
 base = '/home/jose/Programming/aiml/Data/naturewatch'
 # Directory of all the pictures with an animal 
 critter = base + '/critter/'
 # Directory of all the pictures without an animal
 no_critter = base + '/no_critter/'
+
+
+def plot_images():
+	# Plot 9 images
+	for i, image in enumerate(X_train[:9]):
+		# define subplot
+		plt.subplot(330 + 1 + i)
+		plt.imshow(image)
+		print('image', image.shape, 'label', y_train[i])
+	# show the figure
+	plt.show()
+	
 
 def load_data():
 	data = []
@@ -54,15 +66,6 @@ print(X_test.shape)
 print(y_train.shape) # (462,)
 print(y_test.shape)
 
-# Plot 9 images
-for i, image in enumerate(X_train[:9]):
-	# define subplot
-	pyplot.subplot(330 + 1 + i)
-	pyplot.imshow(image)
-	print('image', image.shape, 'label', y_train[i])
-# show the figure
-pyplot.show()
- 
 
 dropout = 0.2
 model = Sequential()
@@ -71,7 +74,7 @@ model = Sequential()
 model.add(Conv2D(32, (3, 3), padding='same', input_shape=(68, 120, 3)))
 model.add(Activation('relu'))
 
-'''
+
 model.add(Conv2D(32, (3, 3)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
@@ -83,7 +86,7 @@ model.add(Conv2D(64, (3, 3)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(dropout))
-'''
+
 model.add(Flatten())
 model.add(Dense(32))
 model.add(Activation('relu'))
@@ -100,8 +103,28 @@ model.compile(loss='categorical_crossentropy',
 				metrics=['accuracy'])
 
 
-model.fit(X_train, y_train, batch_size=3, epochs=5)
+model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=3, epochs=20)
 
 pred = model.predict(X_test).round()
 
 print('Test accuracy', accuracy_score(y_test, pred)*100)
+
+def plot_confusion_matrix():
+	cnf_matrix = confusion_matrix(y_test, pred)
+
+	# Visualizing the Confusion Matrix
+	class_names = [0,1] # Our diagnosis categories
+
+	fig, ax = plt.subplots()
+	# Setting up and visualizing the plot (do not worry about the code below!)
+	tick_marks = np.arange(len(class_names)) 
+	plt.xticks(tick_marks, class_names)
+	plt.yticks(tick_marks, class_names)
+	sns.heatmap(pd.DataFrame(cnf_matrix), annot=True, cmap="YlGnBu" ,fmt='g') # Creating heatmap
+	ax.xaxis.set_label_position("top")
+	plt.tight_layout()
+	plt.title('Confusion matrix', y = 1.1)
+	plt.ylabel('Actual diagnosis')
+	plt.xlabel('Predicted diagnosis')
+
+plot_confusion_matrix()
