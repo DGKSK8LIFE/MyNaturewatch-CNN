@@ -3,7 +3,7 @@ from tensorflow.keras.layers import Dense, Conv2D
 from tensorflow.keras.layers import Activation, MaxPooling2D, Dropout, Flatten
 from tensorflow.keras.optimizers import RMSprop
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.metrics import accuracy_score
 
 from matplotlib import pyplot as plt
 from matplotlib.image import imread
@@ -20,11 +20,9 @@ critter = base + '/critter/'
 no_critter = base + '/no_critter/'
 
 
-def plot_images():
+def plot_image(index):
 	# Plot 9 images
-	for i, image in enumerate(X_train[:9]):
-		# define subplot
-		plt.subplot(330 + 1 + i)
+	for i, image in enumerate(X_train[index]):
 		plt.imshow(image)
 		print('image', image.shape, 'label', y_train[i])
 	# show the figure
@@ -109,22 +107,42 @@ pred = model.predict(X_test).round()
 
 print('Test accuracy', accuracy_score(y_test, pred)*100)
 
-def plot_confusion_matrix():
-	cnf_matrix = confusion_matrix(y_test, pred)
+print(pred)
 
-	# Visualizing the Confusion Matrix
-	class_names = [0,1] # Our diagnosis categories
+def plot_one_image(idx):
+	print('label: %s' % ('yes animal' if np.all(y_test[idx] == np.array([0,1])) else 'no animal'))
+	print('guessed: %s' % ('yes animal' if np.all(pred[idx] == np.array([0,1])) else 'no animal'))
+	print()
+	plt.imshow(X_test[idx])
+	plt.show()
+true_positives = 0
+false_positives = 0
+true_negatives = 0
+false_negatives = 0
 
-	fig, ax = plt.subplots()
-	# Setting up and visualizing the plot (do not worry about the code below!)
-	tick_marks = np.arange(len(class_names)) 
-	plt.xticks(tick_marks, class_names)
-	plt.yticks(tick_marks, class_names)
-	sns.heatmap(pd.DataFrame(cnf_matrix), annot=True, cmap="YlGnBu" ,fmt='g') # Creating heatmap
-	ax.xaxis.set_label_position("top")
-	plt.tight_layout()
-	plt.title('Confusion matrix', y = 1.1)
-	plt.ylabel('Actual diagnosis')
-	plt.xlabel('Predicted diagnosis')
 
-plot_confusion_matrix()
+for i in range(len(y_test)):
+	# True positive. Label: critter, prediction: critter.
+	if np.all(pred[i] == y_test[i]) and np.all(pred[i] == np.array([0, 1])):
+		true_positives += 1
+		
+	# True negative. Label: no critter, no prediction: no critter.
+	elif np.all(pred[i] == y_test[i]) and np.all(pred[i] == np.array([1, 0])):
+		true_negatives += 1
+	
+	# False positive. Label: no critter, prediction: critter.
+	elif np.all(pred[i] != y_test[i]) and np.all(pred[i] == np.array([0, 1])):
+		print('False positive:')
+		plot_one_image(i)
+		false_positives += 1
+	
+	# False negative. Labels: critter, prediction: no critter.
+	elif np.all(pred[i] != y_test[i]) and np.all(pred[i] == np.array([1, 0])):
+		print('False negative:')
+		plot_one_image(i)
+		false_negatives += 1
+
+print("True postitive", true_positives)
+print('True negatives', true_negatives)
+print('False positive', false_positives)
+print('False negative', false_negatives)
