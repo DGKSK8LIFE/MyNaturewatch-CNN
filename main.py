@@ -25,19 +25,17 @@ def load_data():
 	for raw in os.listdir(critter):
 		# The array of values
 		image = cv2.resize(imread(critter + raw), (120, 68))
-		print(image.shape)
 		data.append(np.array(image))
 		# 1 for yes critter
-		labels.append(np.array([0, 1]))
+		labels.append(0)
 		# image.shape = (1088, 1920, 3)
 
 	for raw in os.listdir(no_critter):
 		# load image pixels
 		image = cv2.resize(imread(no_critter + raw), (120, 68))
-		print(image.shape)
 		data.append(np.array(image))
 		# 0 for no critter 
-		labels.append(np.array([1, 0]))
+		labels.append(1)
 		# image.shape = (1088, 1920, 3)
 	data = np.array(data)
 	labels = np.array(labels)
@@ -90,7 +88,7 @@ model.add(Flatten())
 model.add(Dense(32))
 model.add(Activation('relu'))
 model.add(Dropout(dropout))
-model.add(Dense(2))
+model.add(Dense(1))
 model.add(Activation('softmax'))
 
 # initiate RMSprop optimizer
@@ -102,7 +100,7 @@ model.compile(loss='categorical_crossentropy',
 				metrics=['accuracy'])
 
 
-model.fit(X_train, y_train, batch_size=3, epochs=50) # Causes error
+model.fit(X_train, y_train, batch_size=3, epochs=5)
 
 pred = model.predict(X_test)
 
