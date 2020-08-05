@@ -19,20 +19,6 @@ critter = base + '/critter/'
 # Directory of all the pictures without an animal
 no_critter = base + '/no_critter/'
 
-
-def plot_image(index):
-	# Plot 9 images
-	for i, image in enumerate(X_train[index]):
-		plt.imshow(image)
-		print('image', image.shape, 'label', y_train[i])
-	# show the figure
-	plt.show()
-	
-def preprocess(raw):
-	image = cv2.resize(imread(critter + raw), (120, 68))
-	if np.all(image.shape == (68, 120, 3)):
-		return image
-
 def load_data():
 	data = []
 	labels = []
@@ -59,16 +45,7 @@ def load_data():
 
 data, labels = load_data()
 
-# (2308,)
-print(data.shape) 
-print(labels.shape)
-
 X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=101)
-
-print(X_train.shape) # (1846,)
-print(X_test.shape)
-print(y_train.shape) # (462,)
-print(y_test.shape)
 
 model = Sequential()
 # Reshape image to a much smaller size
