@@ -12,7 +12,8 @@ vs
 # What will this program do? Goals?
 - Download all the photos from the Naturewatch Camera (RasPi)
 - Classify them
-- Make directories based on the dates of the animal pictures in the ~/Pictures folder
+- Make directories based on the dates of the animal pictures in the ~/Pictures folder in your host machine
+- Delete the photos with no animals on it
 
 - Goal: 95%+ testing accuracy
 
