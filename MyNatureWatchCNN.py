@@ -28,6 +28,10 @@ def plot_image(index):
 	# show the figure
 	plt.show()
 	
+def preprocess(raw):
+	image = cv2.resize(imread(critter + raw), (120, 68))
+	if np.all(image.shape == (68, 120, 3)):
+		return image
 
 def load_data():
 	data = []
@@ -35,18 +39,20 @@ def load_data():
 	for raw in os.listdir(critter):
 		# The array of values
 		image = cv2.resize(imread(critter + raw), (120, 68))
-		data.append(np.array(image))
-		# 1 for yes critter
-		labels.append(np.array([0, 1]))
+		if np.all(image.shape == (68, 120, 3)):
+			data.append(np.array(image))
+			# 1 for yes critter
+			labels.append(np.array([0, 1]))
 		# image.shape = (1088, 1920, 3)
 
 	for raw in os.listdir(no_critter):
 		# load image pixels
 		image = cv2.resize(imread(no_critter + raw), (120, 68))
-		data.append(np.array(image))
-		# 0 for no critter 
-		labels.append(np.array([1, 0]))
-		# image.shape = (1088, 1920, 3)
+		if np.all(image.shape == (68, 120, 3)):
+			data.append(np.array(image))
+			# 0 for no critter 
+			labels.append(np.array([1, 0]))
+			# image.shape = (1088, 1920, 3)
 	data = np.array(data)
 	labels = np.array(labels)
 	return data, labels
