@@ -67,24 +67,24 @@ print(y_test.shape)
 model = Sequential()
 # Reshape image to a much smaller size
 
-model.add(Conv2D(32, (6, 6), padding='same', input_shape=(68, 120, 3)))
+model.add(Conv2D(32, (3, 3), padding='same', input_shape=(68, 120, 3)))
 model.add(Activation('relu'))
 
 
-model.add(Conv2D(32, (5, 5)))
+model.add(Conv2D(32, (3, 3)))
 model.add(Activation('tanh'))
-model.add(MaxPooling2D(pool_size=(5, 5)))
-model.add(Dropout(0.2))
-
-model.add(Conv2D(64, (5, 5), padding='same'))
-model.add(Activation('relu'))
-model.add(Conv2D(64, (6, 6)))
-model.add(Activation('tanh'))
-model.add(MaxPooling2D(pool_size=(4, 4)))
+model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.3))
 
+model.add(Conv2D(64, (3, 3), padding='same'))
+model.add(Activation('relu'))
+model.add(Conv2D(64, (3, 3)))
+model.add(Activation('tanh'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.1))
+
 model.add(Flatten())
-model.add(Dense(32))
+model.add(Dense(128))
 model.add(Activation('relu'))
 model.add(Dropout(0.3))
 model.add(Dense(2))
