@@ -3,11 +3,11 @@
 # Problem
 The [MyNaturewatch DIY camera](https://mynaturewatch.net/daylight-camera-instructions) is a great DIY birding/outdoors camera to take pictures of wildlife automatically. It uses a Raspberry Pi Zero and a Pi Zero camera + sensor to detect when there is movement and takes a picture of it. The problem is, more often than not, the camera takes pictures of anything that moves like leaves. I find myself scrolling through an endless gallery of nothing and there are very few pictures of actual animals. This network solves that problem.
 
-![no animal](/home/jose/Programming/aiml/Data/naturewatch/critter/2020-05-14-08-31-45.jpg)
+![no animal](/resources/2020-05-14-14-38-41.jpg)
 
 vs
 
-![yes animal](/home/jose/Programming/aiml/Data/naturewatch/no_critter/2020-05-14-10-27-28.jpg)
+![yes animal](/resources/2020-05-14-08-31-45.jpg)
 
 # What will this program do? Goals?
 - Download all the photos from the Naturewatch Camera (RasPi)
