@@ -23,4 +23,7 @@ There is an obvious bias in the dataset; the non-animal pictures outnumber the a
 
 # Todo
 - Use SSH to download photos off the NatureWatch camera
-- expand the dataset, more variety of images. Non birds (like squirrels) have a hard time
+- expand the dataset, more variety of images. More brown/gray animals like pigeons and squirrels
+
+# Disclaimer
+I am not part of the MyNaturewatch team. 
