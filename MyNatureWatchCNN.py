@@ -99,7 +99,7 @@ model.compile(loss='categorical_crossentropy',
 				metrics=['accuracy'])
 
 
-model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=3, epochs=20)
+model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=2, epochs=50)
 
 pred = model.predict(X_test).round()
 
