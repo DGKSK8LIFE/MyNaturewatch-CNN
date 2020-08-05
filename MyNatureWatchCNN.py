@@ -64,8 +64,6 @@ print(X_test.shape)
 print(y_train.shape) # (462,)
 print(y_test.shape)
 
-
-dropout = 0.2
 model = Sequential()
 # Reshape image to a much smaller size
 
@@ -74,21 +72,21 @@ model.add(Activation('relu'))
 
 
 model.add(Conv2D(32, (3, 3)))
-model.add(Activation('relu'))
+model.add(Activation('tanh'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(dropout))
+model.add(Dropout(0.2))
 
 model.add(Conv2D(64, (3, 3), padding='same'))
 model.add(Activation('relu'))
 model.add(Conv2D(64, (3, 3)))
-model.add(Activation('relu'))
+model.add(Activation('tanh'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(dropout))
+model.add(Dropout(0.1))
 
 model.add(Flatten())
 model.add(Dense(32))
 model.add(Activation('relu'))
-model.add(Dropout(dropout))
+model.add(Dropout(0.3))
 model.add(Dense(2))
 model.add(Activation('softmax'))
 
