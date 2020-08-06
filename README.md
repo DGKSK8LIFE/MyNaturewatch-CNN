@@ -15,7 +15,7 @@ vs
 - Make directories based on the dates of the animal pictures in the ~/Pictures folder in your host machine
 - Delete the photos with no animals on it
 
-- Goal: 95%+ testing accuracy
+- Goal: 97%+ testing accuracy
 
 ## Dataset
 The dataset contains 372 pictures of animals and 1,934 pictures of other things (no animals). I prefer not to upload the dataset because it includes human faces of people I know (very random things to add more variety).

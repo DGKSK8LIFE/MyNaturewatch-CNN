@@ -1,3 +1,4 @@
+
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Conv2D
 from tensorflow.keras.layers import Activation, MaxPooling2D, Dropout, Flatten
@@ -67,7 +68,7 @@ model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.1))
 
 model.add(Flatten())
-model.add(Dense(128))
+model.add(Dense(512))
 model.add(Activation('relu'))
 model.add(Dropout(0.3))
 model.add(Dense(2))
