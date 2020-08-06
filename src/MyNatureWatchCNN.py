@@ -1,4 +1,3 @@
-
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Conv2D
 from tensorflow.keras.layers import Activation, MaxPooling2D, Dropout, Flatten
@@ -8,11 +7,9 @@ from sklearn.metrics import accuracy_score
 
 from matplotlib import pyplot as plt
 from matplotlib.image import imread
-import seaborn as sns
-import os
 import numpy as np
+import os
 import cv2
-import pandas as pd
 
 base = '/home/jose/Programming/aiml/Data/naturewatch'
 # Directory of all the pictures with an animal 
