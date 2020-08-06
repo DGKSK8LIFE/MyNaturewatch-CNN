@@ -77,12 +77,12 @@ model.add(Activation('softmax'))
 opt = RMSprop(lr=0.0001, decay=1e-6)
 
 # Let's train the model using RMSprop
-model.compile(loss='categorical_crossentropy',
+model.compile(loss='binary_crossentropy',
 				optimizer=opt,
 				metrics=['accuracy'])
 
 
-model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=2, epochs=50)
+model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=3, epochs=50)
 
 pred = model.predict(X_test).round()
 
