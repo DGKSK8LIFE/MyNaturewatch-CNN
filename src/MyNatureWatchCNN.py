@@ -46,7 +46,7 @@ def load_data():
 
 data, labels = load_data()
 
-X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=101)
+X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.15, random_state=42)
 
 model = Sequential()
 # Reshape image to a much smaller size
@@ -68,7 +68,7 @@ model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.1))
 
 model.add(Flatten())
-model.add(Dense(512))
+model.add(Dense(64))
 model.add(Activation('relu'))
 model.add(Dropout(0.3))
 model.add(Dense(2))
@@ -83,7 +83,7 @@ model.compile(loss='binary_crossentropy',
 				metrics=['accuracy'])
 
 
-model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=1, epochs=50)
+model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=3, epochs=50)
 
 pred = model.predict(X_test).round()
 
@@ -126,3 +126,5 @@ print("True postitive", true_positives)
 print('True negatives', true_negatives)
 print('False positive - non-animal photo that would be saved', false_positives)
 print('False negative - animal photo that would get deleted', false_negatives)
+
+model.save('model/MyNaturewatchCNN')
