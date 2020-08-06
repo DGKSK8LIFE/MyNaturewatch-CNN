@@ -82,7 +82,7 @@ model.compile(loss='binary_crossentropy',
 				metrics=['accuracy'])
 
 
-model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=3, epochs=50)
+model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=1, epochs=50)
 
 pred = model.predict(X_test).round()
 
