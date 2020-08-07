@@ -9,7 +9,8 @@ import cv2
 import sys
 import os
 
-temp = '/tmp/photos'
+temp = '/tmp/photos/'
+pictures = '/home/jose/Pictures/MyNaturewatch/'
 
 def progress(filename, size, sent):
     sys.stdout.write("%s's progress: %.2f%%   \r" % (filename, float(sent)/float(size)*100) )
@@ -36,15 +37,32 @@ try:
 except gaierror:
     print("Name or service not known: Are you sure you are connected to the camera's internet?")
 
-inputs = []
+input_images = []
 
 for raw in os.listdir(temp):
     if raw.endswith('.jpg'):
         image = cv2.resize(imread(temp + raw), (120, 68))
         if np.all(image.shape == (68, 120, 3)):
-            inputs.append(np.array(image))
+            input_images.append(np.array(image))
     else:
         os.system('rm ' + raw)
 
-#model = load_model('model/MyNaturewatchCNN')
+model = load_model('model/MyNaturewatchCNN')
 
+preds = model.predict(input_images).round()
+
+dates = set([raw[:10] for raw in os.listdir(temp)])
+
+for d in dates: 
+    os.system('mkdir ' + pictures + d)
+    os.system('mkdir ' + pictures + d + '-no-critter')
+
+for i in range(len(preds)):
+    date = (os.listdir(temp)[i])[:10]
+    # Critter
+    if np.all(preds[i] == np.array([0, 1])):
+        # Ex: mv /temp/photos/2020-04-05-14-15-23.jpg /home/jose/Pictures/MyNaturewatch/2020-04-05
+        os.system('mv ' + temp + raw + ' ' + pictures + date)
+    #No critter
+    else:
+        os.system('mv ' + temp + raw + ' ' + pictures + date + '-no-critter')
