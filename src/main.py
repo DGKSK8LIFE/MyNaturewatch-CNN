@@ -17,7 +17,6 @@ def progress(filename, size, sent):
     sys.stdout.write("%s's progress: %.2f%%   \r" % (filename, float(sent)/float(size)*100) )
 
 try:
-
     ssh = SSHClient()
     ssh.load_system_host_keys()
     ssh.connect(hostname='camera.local', 

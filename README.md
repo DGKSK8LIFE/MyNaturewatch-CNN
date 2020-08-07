@@ -23,8 +23,7 @@ The dataset contains 372 pictures of animals and 1,934 pictures of other things 
 There is an obvious bias in the dataset; the non-animal pictures outnumber the animal pictures 5 to 1. This teaches the model that there are more non-animal pictures and that animal pictures are rarer. 
 
 ## Todo
-- Use SSH to download photos off the NatureWatch camera
-- expand the dataset, more variety of images. More brown/gray animals like pigeons and squirrels
+- Test the program
 
 ## Disclaimer
 I am not part of the MyNaturewatch team. I am just a kid learning about machine learning.
