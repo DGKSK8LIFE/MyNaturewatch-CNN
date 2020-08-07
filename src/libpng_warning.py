@@ -1,3 +1,6 @@
+### This fie is to detect if a photo is different from sRGB
+### cv2 gives a warning and there is dimension issues.
+
 import cv2 
 from matplotlib import pyplot as plt
 from matplotlib.image import imread
