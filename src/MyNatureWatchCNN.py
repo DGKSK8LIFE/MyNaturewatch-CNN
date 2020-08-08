@@ -86,6 +86,17 @@ pred = model.predict(X_test).round()
 
 print('Test accuracy', accuracy_score(y_test, pred)*100)
 
+answer = None 
+while answer not in ['yes', 'y', 'no', 'n']:
+	answer = input("Would you like to save this model (and overwrite the previously saved one)? (y/n)")
+	if answer == 'yes' or answer == 'y':
+		model.save('model/MyNaturewatchCNN')
+		break
+	elif answer == 'no' or answer == 'n':
+		break
+	else:
+		print('Please enter yes or no')
+
 def plot_one_image(idx):
 	print('label: %s' % ('yes animal' if np.all(y_test[idx] == np.array([0,1])) else 'no animal'))
 	print('guessed: %s' % ('yes animal' if np.all(pred[idx] == np.array([0,1])) else 'no animal'))
@@ -124,4 +135,3 @@ print('True negatives', true_negatives)
 print('False positive - non-animal photo that would be saved', false_positives)
 print('False negative - animal photo that would get deleted', false_negatives)
 
-model.save('model/MyNaturewatchCNN')

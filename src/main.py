@@ -35,7 +35,7 @@ try:
 
     ssh.close()
 except gaierror:
-    print("Name or service not known: Are you sure you are connected to the camera's internet?")
+    print("Name or service not known: Are you connected to the camera's internet?")
 
 input_images = []
 
