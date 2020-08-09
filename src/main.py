@@ -25,7 +25,7 @@ try:
 
     scp = SCPClient(ssh.get_transport(), progress=progress)
 
-    scp.get('~/NaturewatchCameraServer/www/photos', temp, recursive=True)
+    scp.get('~/NaturewatchCameraServer/www/photos', '/tmp', recursive=True)
 
     assert len(os.listdir(temp)) != 0
 
@@ -45,9 +45,12 @@ for raw in os.listdir(temp):
         if np.all(image.shape == (68, 120, 3)):
             input_images.append(np.array(image))
     else:
-        os.system('rm ' + raw)
+        os.system('rm -rf ' + raw)
 
-model = load_model('model/MyNaturewatchCNN')
+input_images = np.array(input_images)
+
+print(input_images.shape)
+model = load_model('/home/jose/Programming/naturewatch-cnn/model/MyNaturewatchCNN')
 
 preds = model.predict(input_images).round()
 
@@ -63,7 +66,7 @@ for i in range(len(preds)):
     # Critter
     if np.all(preds[i] == np.array([0, 1])):
         # Ex: mv /temp/photos/2020-04-05-14-15-23.jpg /home/jose/Pictures/MyNaturewatch/2020-04-05
-        os.system('mv ' + join(temp, raw) + ' ' + join(pictures_dir, date))
+        os.system('mv ' + join(temp, os.listdir(temp)[i]) + ' ' + join(pictures_dir, date))
     #No critter
     else:
-        os.system('mv ' + join(temp, raw) + ' ' + join(pictures_dir, date) + '-no-critter')
+        os.system('mv ' + join(temp, os.listdir(temp)[i]) + ' ' + join(pictures_dir, date) + '-no-critter')
