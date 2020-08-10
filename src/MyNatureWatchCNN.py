@@ -3,7 +3,6 @@ from tensorflow.keras.layers import Dense, Conv2D
 from tensorflow.keras.layers import Activation, MaxPooling2D, Dropout, Flatten
 from tensorflow.keras.optimizers import RMSprop
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
 
 from matplotlib import pyplot as plt
 from matplotlib.image import imread
@@ -79,12 +78,14 @@ model.compile(loss='binary_crossentropy',
 				optimizer=opt,
 				metrics=['accuracy'])
 
+batch_size = 3
 
-model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=3, epochs=50)
+model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=batch_size, epochs=50)
 
 pred = model.predict(X_test).round()
 
-print('Test accuracy', accuracy_score(y_test, pred)*100)
+results = model.evaluate(X_test, y_test, batch_size=batch_size)
+print('Test loss, test accuracy:', results)
 
 answer = None 
 while answer not in ['yes', 'y', 'no', 'n']:
