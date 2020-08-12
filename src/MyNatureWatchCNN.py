@@ -7,8 +7,8 @@ from sklearn.model_selection import train_test_split
 from matplotlib import pyplot as plt
 from matplotlib.image import imread
 import numpy as np
+import cv2
 import os
-
 
 base = '/home/jose/Programming/aiml/Data/naturewatch'
 # Directory of all the pictures with an animal 
@@ -21,7 +21,7 @@ def load_data():
 	labels = []
 	for raw in os.listdir(critter):
 		# The array of values
-		image = np.resize(imread(critter + raw), (68, 120, 3))
+		image = cv2.resize(imread(critter + raw), (120, 68))
 		if np.all(image.shape == (68, 120, 3)):
 			data.append(np.array(image))
 			# 1 for yes critter
@@ -30,7 +30,7 @@ def load_data():
 
 	for raw in os.listdir(no_critter):
 		# load image pixels
-		image = np.resize(imread(no_critter + raw), (68, 120, 3))
+		image = cv2.resize(imread(no_critter + raw), (120, 68))
 		if np.all(image.shape == (68, 120, 3)):
 			data.append(np.array(image))
 			# 0 for no critter 
@@ -42,14 +42,13 @@ def load_data():
 
 data, labels = load_data()
 
-X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.15, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.15)
 
 model = Sequential()
 # Reshape image to a much smaller size
 
 model.add(Conv2D(32, (3, 3), padding='same', input_shape=(68, 120, 3)))
 model.add(Activation('relu'))
-
 
 model.add(Conv2D(32, (3, 3)))
 model.add(Activation('tanh'))
@@ -78,13 +77,14 @@ model.compile(loss='binary_crossentropy',
 				optimizer=opt,
 				metrics=['accuracy'])
 
-batch_size = 3
+batch_size = 1
 
-model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=batch_size, epochs=50)
+model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=batch_size, epochs=40)
 
 pred = model.predict(X_test).round()
 
 results = model.evaluate(X_test, y_test, batch_size=batch_size)
+
 print('Test loss, test accuracy:', results)
 
 answer = None 
@@ -114,10 +114,12 @@ false_negatives = 0
 for i in range(len(y_test)):
 	# True positive. Label: critter, prediction: critter.
 	if np.all(pred[i] == y_test[i]) and np.all(pred[i] == np.array([0, 1])):
+		plot_one_image(i)
 		true_positives += 1
 		
 	# True negative. Label: no critter, no prediction: no critter.
-	elif np.all(pred[i] == y_test[i]) and np.all(pred[i] == np.array([1, 0])):
+	if np.all(pred[i] == y_test[i]) and np.all(pred[i] == np.array([1, 0])):
+		plot_one_image(i)
 		true_negatives += 1
 	
 	# False positive. Label: no critter, prediction: critter.
