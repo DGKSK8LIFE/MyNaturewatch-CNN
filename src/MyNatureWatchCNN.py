@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 from matplotlib.image import imread
 import numpy as np
 import os
-import cv2
+
 
 base = '/home/jose/Programming/aiml/Data/naturewatch'
 # Directory of all the pictures with an animal 
@@ -21,7 +21,7 @@ def load_data():
 	labels = []
 	for raw in os.listdir(critter):
 		# The array of values
-		image = cv2.resize(imread(critter + raw), (120, 68))
+		image = np.resize(imread(critter + raw), (68, 120, 3))
 		if np.all(image.shape == (68, 120, 3)):
 			data.append(np.array(image))
 			# 1 for yes critter
@@ -30,7 +30,7 @@ def load_data():
 
 	for raw in os.listdir(no_critter):
 		# load image pixels
-		image = cv2.resize(imread(no_critter + raw), (120, 68))
+		image = np.resize(imread(no_critter + raw), (68, 120, 3))
 		if np.all(image.shape == (68, 120, 3)):
 			data.append(np.array(image))
 			# 0 for no critter 

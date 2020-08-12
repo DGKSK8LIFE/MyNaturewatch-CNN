@@ -9,10 +9,10 @@ from matplotlib.image import imread
 import os
 from os.path import join
 
-path = '/home/jose/Programming/aiml/Data/naturewatch/images/images'
+path = '/home/jose/Downloads/imgs/raw-img'
 for directory in os.listdir(path):
     for raw in os.listdir(join(path, directory)):
         img = imread(join(path, directory, raw))
         # Portrait picture
-        if img.shape[0] > img.shape[1]:
+        if (img.shape[0] > img.shape[1]) or ((img.shape[1] / img.shape[0]) > 3):
             os.system('rm -f ' + join(path, directory, raw))

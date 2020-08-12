@@ -7,7 +7,6 @@ from socket import gaierror
 from os.path import join
 from time import sleep
 import numpy as np
-import cv2
 import sys
 import os
 
@@ -43,7 +42,7 @@ temp_list = [raw for raw in os.listdir(temp) if raw.endswith('.jpg')]
 input_images = []
 
 for raw in temp_list:
-    image = cv2.resize(imread(join(temp, raw)), (120, 68))
+    image = np.resize(imread(join(temp, raw)), (68, 120, 3))
     if np.all(image.shape == (68, 120, 3)):
         input_images.append(np.array(image))
 
