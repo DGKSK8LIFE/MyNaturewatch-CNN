@@ -56,9 +56,9 @@ model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.3))
 
 model.add(Conv2D(64, (3, 3), padding='same'))
-model.add(Activation('relu'))
-model.add(Conv2D(64, (3, 3)))
 model.add(Activation('tanh'))
+model.add(Conv2D(64, (3, 3)))
+model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.1))
 
@@ -77,7 +77,7 @@ model.compile(loss='binary_crossentropy',
 				optimizer=opt,
 				metrics=['accuracy'])
 
-batch_size = 1
+batch_size = 5
 
 model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=batch_size, epochs=40)
 
@@ -89,7 +89,7 @@ print('Test loss, test accuracy:', results)
 
 answer = None 
 while answer not in ['yes', 'y', 'no', 'n']:
-	answer = input("Would you like to save this model (and overwrite the previously saved one)? (y/n)")
+	answer = input("Would you like to save this model (and overwrite the previously saved one)? (y/n) ")
 	if answer == 'yes' or answer == 'y':
 		model.save('model/MyNaturewatchCNN')
 		break
@@ -114,12 +114,12 @@ false_negatives = 0
 for i in range(len(y_test)):
 	# True positive. Label: critter, prediction: critter.
 	if np.all(pred[i] == y_test[i]) and np.all(pred[i] == np.array([0, 1])):
-		plot_one_image(i)
+		#plot_one_image(i)
 		true_positives += 1
 		
 	# True negative. Label: no critter, no prediction: no critter.
 	if np.all(pred[i] == y_test[i]) and np.all(pred[i] == np.array([1, 0])):
-		plot_one_image(i)
+		#plot_one_image(i)
 		true_negatives += 1
 	
 	# False positive. Label: no critter, prediction: critter.
@@ -136,6 +136,7 @@ for i in range(len(y_test)):
 
 print("True postitive", true_positives)
 print('True negatives', true_negatives)
+print('Out of', len(pred), 'pictures:')
 print('False positive - non-animal photo that would be saved', false_positives)
 print('False negative - animal photo that would get deleted', false_negatives)
 
