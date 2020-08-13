@@ -1,6 +1,6 @@
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Conv2D
-from tensorflow.keras.layers import Activation, MaxPooling2D, Dropout, Flatten
+from tensorflow.keras.layers import Activation, MaxPooling2D, Dropout, Flatten, BatchNormalization
 from tensorflow.keras.optimizers import RMSprop
 from sklearn.model_selection import train_test_split
 
@@ -51,25 +51,29 @@ model = Sequential()
 
 model.add(Conv2D(32, (3, 3), padding='same', input_shape=(68, 120, 3)))
 model.add(Activation('relu'))
+model.add(BatchNormalization())
 
 model.add(Conv2D(32, (3, 3)))
 model.add(Activation('tanh'))
+model.add(BatchNormalization())
 model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.3))
 
 model.add(Conv2D(64, (3, 3), padding='same'))
 model.add(Activation('relu'))
-model.add(Conv2D(32, (3, 3)))
-model.add(Activation('tanh'))
+model.add(BatchNormalization())
+model.add(Dropout(0.2))
 model.add(Conv2D(64, (3, 3)))
-model.add(Activation('relu'))
+model.add(Activation('tanh'))
+model.add(BatchNormalization())
 model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.1))
 
 model.add(Flatten())
 model.add(Dense(64))
 model.add(Activation('relu'))
-model.add(Dropout(0.3))
+model.add(Dropout(0.2))
+model.add(Dense(64))
+model.add(Activation('relu'))
+model.add(Dropout(0.2))
 model.add(Dense(2))
 model.add(Activation('softmax'))
 
@@ -95,7 +99,7 @@ answer = None
 while answer not in ['yes', 'y', 'no', 'n']:
 	answer = input("Would you like to save this model (and overwrite the previously saved one)? (y/n) ")
 	if answer == 'yes' or answer == 'y':
-		model.save('model/MyNaturewatchCNN')
+		model.save('/home/jose/Programming/naturewatch-cnn/model/MyNaturewatchCNN')
 		break
 	elif answer == 'no' or answer == 'n':
 		break
