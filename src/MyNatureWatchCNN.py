@@ -22,6 +22,7 @@ def load_data():
 	for raw in os.listdir(critter):
 		# The array of values
 		image = cv2.resize(imread(critter + raw), (120, 68))
+		#image = (image - 127.5) / 127.5
 		if np.all(image.shape == (68, 120, 3)):
 			data.append(np.array(image))
 			# 1 for yes critter
@@ -31,6 +32,7 @@ def load_data():
 	for raw in os.listdir(no_critter):
 		# load image pixels
 		image = cv2.resize(imread(no_critter + raw), (120, 68))
+		#image = (image - 127.5) / 127.5
 		if np.all(image.shape == (68, 120, 3)):
 			data.append(np.array(image))
 			# 0 for no critter 
@@ -56,6 +58,8 @@ model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.3))
 
 model.add(Conv2D(64, (3, 3), padding='same'))
+model.add(Activation('relu'))
+model.add(Conv2D(32, (3, 3)))
 model.add(Activation('tanh'))
 model.add(Conv2D(64, (3, 3)))
 model.add(Activation('relu'))
