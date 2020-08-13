@@ -52,16 +52,16 @@ model = Sequential()
 model.add(Conv2D(32, (3, 3), padding='same', input_shape=(68, 120, 3)))
 model.add(Activation('relu'))
 model.add(BatchNormalization())
-
+model.add(Dropout(0.1))
 model.add(Conv2D(32, (3, 3)))
-model.add(Activation('tanh'))
+model.add(Activation('relu'))
 model.add(BatchNormalization())
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
 model.add(Conv2D(64, (3, 3), padding='same'))
-model.add(Activation('relu'))
+model.add(Activation('tanh'))
 model.add(BatchNormalization())
-model.add(Dropout(0.2))
+model.add(Dropout(0.1))
 model.add(Conv2D(64, (3, 3)))
 model.add(Activation('tanh'))
 model.add(BatchNormalization())
@@ -70,10 +70,10 @@ model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Flatten())
 model.add(Dense(64))
 model.add(Activation('relu'))
-model.add(Dropout(0.2))
+model.add(Dropout(0.3))
 model.add(Dense(64))
 model.add(Activation('relu'))
-model.add(Dropout(0.2))
+model.add(Dropout(0.3))
 model.add(Dense(2))
 model.add(Activation('softmax'))
 
@@ -94,17 +94,6 @@ pred = model.predict(X_test).round()
 results = model.evaluate(X_test, y_test, batch_size=batch_size)
 
 print('Test loss, test accuracy:', results)
-
-answer = None 
-while answer not in ['yes', 'y', 'no', 'n']:
-	answer = input("Would you like to save this model (and overwrite the previously saved one)? (y/n) ")
-	if answer == 'yes' or answer == 'y':
-		model.save('/home/jose/Programming/naturewatch-cnn/model/MyNaturewatchCNN')
-		break
-	elif answer == 'no' or answer == 'n':
-		break
-	else:
-		print('Please enter yes or no')
 
 def plot_one_image(idx):
 	print('label: %s' % ('yes animal' if np.all(y_test[idx] == np.array([0,1])) else 'no animal'))
@@ -148,3 +137,14 @@ print('Out of', len(pred), 'pictures:')
 print('False positive - non-animal photo that would be saved', false_positives)
 print('False negative - animal photo that would get deleted', false_negatives)
 
+answer = input("Would you like to save this model (and overwrite the previously saved one)? (y/n) ")
+
+while answer not in ['yes', 'y', 'no', 'n']:
+	
+	if answer == 'yes' or answer == 'y':
+		model.save('model/MyNaturewatchCNN')
+		break
+	elif answer == 'no' or answer == 'n':
+		break
+	else:
+		print('\nPlease enter yes or no')
