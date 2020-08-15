@@ -13,7 +13,7 @@ import os
 
 temp = '/tmp/photos'
 pictures_dir = '/home/jose/Pictures/MyNaturewatch'
-
+'''
 def progress(filename, size, sent):
     sys.stdout.write("%s's progress: %.2f%%   \r" % (filename, float(sent)/float(size)*100) )
 
@@ -38,7 +38,7 @@ try:
     ssh.close()
 except gaierror:
     print("Name or service not known: Are you connected to the camera's internet?")
-
+'''
 temp_list = [raw for raw in os.listdir(temp) if raw.endswith('.jpg')]
 input_images = []
 
